@@ -37,6 +37,18 @@ public class CustomerController implements CrudController<Customer> {
 		}
 		return customers;
 	}
+	
+	/**
+	 * Reads a customer by taking their id
+	 */
+	@Override
+	public Customer readOne() {
+		LOGGER.info("Please enter the id of the customer you would like to read");
+		Long id = utils.getLong();
+		Customer customer = customerDAO.read(id);
+		LOGGER.info(customer);
+		return customer;
+	}
 
 	/**
 	 * Creates a customer by taking in user input
