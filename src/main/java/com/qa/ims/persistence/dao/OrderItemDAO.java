@@ -11,11 +11,10 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.persistence.domain.OrderItem;
 import com.qa.ims.utils.DBUtils;
 
-public class OrderItemDao implements Dao<OrderItem> {
+public class OrderItemDAO implements Dao<OrderItem> {
 	
 	public static final Logger LOGGER = LogManager.getLogger();
 	
@@ -48,18 +47,35 @@ public class OrderItemDao implements Dao<OrderItem> {
 
 	@Override
 	public OrderItem read(Long id) {
+//		try (Connection connection = DBUtils.getInstance().getConnection();
+//				PreparedStatement statement = connection.prepareStatement("SELECT * FROM orders_items WHERE order_item_id = ?");) {
+//			statement.setLong(1, id);
+//			try (ResultSet resultSet = statement.executeQuery();) {
+//				resultSet.next();
+//				return modelFromResultSet(resultSet);
+//			}
+//		} catch (Exception e) {
+//			LOGGER.debug(e);
+//			LOGGER.error(e.getMessage());
+//		}
+		return null;
+	}
+	
+	public List<OrderItem> readOrderItems(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("SELECT * FROM orders_items WHERE order_item_id = ?");) {
+				PreparedStatement statement = connection.prepareStatement("SELECT * FROM orders_items WHERE order_id = ?");) {
 			statement.setLong(1, id);
-			try (ResultSet resultSet = statement.executeQuery();) {
-				resultSet.next();
-				return modelFromResultSet(resultSet);
+			ResultSet resultSet = statement.executeQuery();
+			List<OrderItem> ordersItems = new ArrayList<>();
+			while (resultSet.next()) {
+				ordersItems.add(modelFromResultSet(resultSet));
 			}
-		} catch (Exception e) {
+			return ordersItems;
+		} catch (SQLException e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
-		return null;
+		return new ArrayList<>();
 	}
 	
 	public OrderItem readLatest() {
