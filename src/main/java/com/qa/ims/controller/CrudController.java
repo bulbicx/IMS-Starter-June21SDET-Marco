@@ -9,6 +9,8 @@ import java.util.List;
 public interface CrudController<T> {
 
 	List<T> readAll();
+	
+	T readOne();
 
 	T create();
 
