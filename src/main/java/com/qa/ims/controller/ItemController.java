@@ -34,6 +34,18 @@ public class ItemController implements CrudController<Item> {
 		LOGGER.info("*".repeat(50));
 		return items;
 	}
+	
+	/**
+	 * Reads an item by taking their id
+	 */
+	@Override
+	public Item readOne() {
+		LOGGER.info("Please enter the id of the item you would like to read");
+		Long id = utils.getLong();
+		Item item = itemDAO.read(id);
+		LOGGER.info(item);
+		return item;
+	}
 
 	/*
 	 * Creates an item by taking in user input 
