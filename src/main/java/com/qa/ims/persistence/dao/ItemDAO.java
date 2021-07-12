@@ -26,6 +26,14 @@ public class ItemDAO implements Dao<Item> {
 		double price = resultSet.getDouble("price");
 		return new Item(itemId, itemName, description, price);
 	}
+	
+	public boolean checkEntryExist(ResultSet resultSet) throws SQLException {
+		if(resultSet.next()) {
+			modelFromResultSet(resultSet);
+			return true;
+		} 
+		return false;
+	}
 
 	/*
 	 * Reads all items from database
@@ -56,8 +64,10 @@ public class ItemDAO implements Dao<Item> {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM items ORDER BY item_id DESC LIMIT 1");) {
-			resultSet.next();
-			return modelFromResultSet(resultSet);
+			if(resultSet.next()) {
+				return modelFromResultSet(resultSet);
+			}
+			return null;
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -89,8 +99,10 @@ public class ItemDAO implements Dao<Item> {
 				PreparedStatement statement = connection.prepareStatement("SELECT * FROM items WHERE item_id = ?");) {
 			statement.setLong(1, id);
 			try (ResultSet resultSet = statement.executeQuery();) {
-				resultSet.next();
-				return modelFromResultSet(resultSet);
+				if(resultSet.next()) {
+					return modelFromResultSet(resultSet);
+				}
+				return null;
 			}
 		} catch (Exception e) {
 			LOGGER.debug(e);

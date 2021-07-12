@@ -55,8 +55,10 @@ public class OrderDAO implements Dao<Order> {
 				PreparedStatement statement = connection.prepareStatement("SELECT * FROM orders WHERE order_id = ?");) {
 			statement.setLong(1, id);
 			try (ResultSet resultSet = statement.executeQuery();) {
-				resultSet.next();
-				return modelFromResultSet(resultSet);
+				if(resultSet.next()) {
+					return modelFromResultSet(resultSet);
+				}
+				return null;
 			}
 		} catch (Exception e) {
 			LOGGER.debug(e);
@@ -72,8 +74,10 @@ public class OrderDAO implements Dao<Order> {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders ORDER BY order_id DESC LIMIT 1");) {
-			resultSet.next();
-			return modelFromResultSet(resultSet);
+			if(resultSet.next()) {
+				return modelFromResultSet(resultSet);
+			}
+			return null;
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());

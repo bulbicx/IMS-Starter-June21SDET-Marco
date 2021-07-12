@@ -32,9 +32,11 @@ public class CustomerController implements CrudController<Customer> {
 	@Override
 	public List<Customer> readAll() {
 		List<Customer> customers = customerDAO.readAll();
+		LOGGER.info("*".repeat(50));
 		for (Customer customer : customers) {
 			LOGGER.info(customer);
 		}
+		LOGGER.info("*".repeat(50));
 		return customers;
 	}
 	
@@ -46,7 +48,9 @@ public class CustomerController implements CrudController<Customer> {
 		LOGGER.info("Please enter the id of the customer you would like to read");
 		Long id = utils.getLong();
 		Customer customer = customerDAO.read(id);
+		LOGGER.info("*".repeat(50));
 		LOGGER.info(customer);
+		LOGGER.info("*".repeat(50));
 		return customer;
 	}
 
