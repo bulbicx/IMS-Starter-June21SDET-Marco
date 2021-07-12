@@ -37,8 +37,10 @@ public class CustomerDAO implements Dao<Customer> {
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM customers");) {
 			List<Customer> customers = new ArrayList<>();
-			while (resultSet.next()) {
-				customers.add(modelFromResultSet(resultSet));
+			if(resultSet.next()) {
+				while(resultSet.next()) {
+					customers.add(modelFromResultSet(resultSet));
+				}
 			}
 			return customers;
 		} catch (SQLException e) {
