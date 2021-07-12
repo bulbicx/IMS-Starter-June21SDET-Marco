@@ -26,14 +26,6 @@ public class ItemDAO implements Dao<Item> {
 		double price = resultSet.getDouble("price");
 		return new Item(itemId, itemName, description, price);
 	}
-	
-	public boolean checkEntryExist(ResultSet resultSet) throws SQLException {
-		if(resultSet.next()) {
-			modelFromResultSet(resultSet);
-			return true;
-		} 
-		return false;
-	}
 
 	/*
 	 * Reads all items from database
@@ -46,8 +38,11 @@ public class ItemDAO implements Dao<Item> {
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM items");) {
 			List<Item> items = new ArrayList<>();
-			while (resultSet.next()) {
-				items.add(modelFromResultSet(resultSet));
+			if(resultSet.next()) {
+				resultSet.previous();
+				while(resultSet.next()) {
+					items.add(modelFromResultSet(resultSet));
+				}
 			}
 			return items;
 		} catch (SQLException e) {

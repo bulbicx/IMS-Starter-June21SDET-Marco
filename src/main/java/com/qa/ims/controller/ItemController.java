@@ -27,6 +27,10 @@ public class ItemController implements CrudController<Item> {
 	@Override
 	public List<Item> readAll() {
 		List<Item> items = itemDAO.readAll();
+		if(items.size() < 1) {
+			LOGGER.info("There are no items stored in the database.");
+			return items;
+		}
 		LOGGER.info("*".repeat(50));
 		for (Item item : items) {
 			LOGGER.info(item);
@@ -43,6 +47,10 @@ public class ItemController implements CrudController<Item> {
 		LOGGER.info("Please enter the id of the item you would like to read");
 		Long id = utils.getLong();
 		Item item = itemDAO.read(id);
+		if(item == null) {
+			LOGGER.info("Item with the id specified could not be found. Please insert a valid ID");
+			return item;
+		}
 		LOGGER.info("*".repeat(50));
 		LOGGER.info(item);
 		LOGGER.info("*".repeat(50));
@@ -73,13 +81,18 @@ public class ItemController implements CrudController<Item> {
 	public Item update() {
 		LOGGER.info("Please enter the id of the item you would like to update");
 		Long id = utils.getLong();
+		Item item = itemDAO.read(id);
+		if(item == null) {
+			LOGGER.info("Item with the id specified could not be found. Please insert a valid ID");
+			return item;
+		}
 		LOGGER.info("Please enter the new item name");
 		String itemName = utils.getString();
 		LOGGER.info("Please enter the new description");
 		String description = utils.getString();
 		LOGGER.info("Please enter the new price");
 		Double price = utils.getDouble();
-		Item item = itemDAO.update(new Item(id, itemName, description, price));
+		item = itemDAO.update(new Item(id, itemName, description, price));
 		LOGGER.info("Item Updated");
 		LOGGER.info("*".repeat(50));
 		return item;
@@ -92,8 +105,16 @@ public class ItemController implements CrudController<Item> {
 	public int delete() {
 		LOGGER.info("Please enter the id of the item you would like to delete");
 		Long id = utils.getLong();
-		LOGGER.info("Item Deleted");
-		return itemDAO.delete(id);
+		Item item = itemDAO.read(id);
+		if(item == null) {
+			LOGGER.info("Item with the id specified could not be found. Please insert a valid ID");
+			return 0;
+		}
+		int result = itemDAO.delete(id);
+		if(result > 0) {
+			LOGGER.info("Item Deleted");			
+		}
+		return result;
 	}
 
 }

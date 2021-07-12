@@ -35,8 +35,11 @@ public class OrderDAO implements Dao<Order> {
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders");) {
 			List<Order> orders = new ArrayList<>();
-			while(resultSet.next()) {
-				orders.add(modelFromResultSet(resultSet));
+			if(resultSet.next()) {
+				resultSet.previous();
+				while(resultSet.next()) {
+					orders.add(modelFromResultSet(resultSet));
+				}
 			}
 			return orders;
 		} catch (SQLException e) {
