@@ -47,17 +47,17 @@ public class OrderItemDAO implements Dao<OrderItem> {
 
 	@Override
 	public OrderItem read(Long id) {
-//		try (Connection connection = DBUtils.getInstance().getConnection();
-//				PreparedStatement statement = connection.prepareStatement("SELECT * FROM orders_items WHERE order_item_id = ?");) {
-//			statement.setLong(1, id);
-//			try (ResultSet resultSet = statement.executeQuery();) {
-//				resultSet.next();
-//				return modelFromResultSet(resultSet);
-//			}
-//		} catch (Exception e) {
-//			LOGGER.debug(e);
-//			LOGGER.error(e.getMessage());
-//		}
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statement = connection.prepareStatement("SELECT * FROM orders_items WHERE order_item_id = ?");) {
+			statement.setLong(1, id);
+			try (ResultSet resultSet = statement.executeQuery();) {
+				resultSet.next();
+				return modelFromResultSet(resultSet);
+			}
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
 		return null;
 	}
 	
@@ -76,6 +76,29 @@ public class OrderItemDAO implements Dao<OrderItem> {
 			LOGGER.error(e.getMessage());
 		}
 		return new ArrayList<>();
+	}
+	
+	/*
+	 * This method is called when an update operation on adding a new item to an existing 
+	 * order is happening. It retrieves if there is the order_item having an item id and
+	 * an order id as provided from the user.
+	 */
+	public OrderItem readOrderItem(Long orderId, Long itemId) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statement = connection.prepareStatement("SELECT * FROM orders_items WHERE order_id = ? AND item_id = ?");) {
+			statement.setLong(1, orderId);
+			statement.setLong(2, itemId);
+			try (ResultSet resultSet = statement.executeQuery();) {
+				if(resultSet.next()) {
+					return modelFromResultSet(resultSet);
+				}
+				return null;
+			}
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return null;
 	}
 	
 	public OrderItem readLatest() {
@@ -127,11 +150,42 @@ public class OrderItemDAO implements Dao<OrderItem> {
 		}
 		return null;
 	}
+	
+	public OrderItem updateQty(OrderItem orderItem) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statement = connection
+						.prepareStatement("UPDATE orders_items SET qty = ? WHERE order_item_id = ?");) {
+			statement.setInt(1, orderItem.getQty());
+			statement.setLong(2, orderItem.getOrderItemId());
+			statement.executeUpdate();
+			return read(orderItem.getOrderItemId());
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return null;
+	}
 
 	@Override
 	public int delete(long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM orders_items WHERE order_item_id = ?");) {
+			statement.setLong(1, id);
+			return statement.executeUpdate();
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return 0;
+	}
+	
+	/*
+	 * It deletes all order items having same order id.
+	 * This action is triggered when an order is deleted
+	 */
+	public int deleteOrderItems(long id) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement statement = connection.prepareStatement("DELETE FROM orders_items WHERE order_id = ?");) {
 			statement.setLong(1, id);
 			return statement.executeUpdate();
 		} catch (Exception e) {
