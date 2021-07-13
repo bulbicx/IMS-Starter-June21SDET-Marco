@@ -72,9 +72,9 @@ public class OrderController implements CrudController<Order> {
 		LOGGER.info("-".repeat(50));
 		for (OrderItem orderItem : orderItems) {
 			Item item = itemDAO.read(orderItem.getItemId());
-			LOGGER.info("order item id: " + orderItem.getOrderItemId() + " | item id: " + orderItem.getItemId() + " | quantity: " + orderItem.getQty() + " | lineTotal: £" + orderItem.getLineTotal());
+			LOGGER.info("order item id: " + orderItem.getOrderItemId() + " | item id: " + orderItem.getItemId() + " | quantity: " + orderItem.getQty() + " | lineTotal: ï¿½" + orderItem.getLineTotal());
 			LOGGER.info("       ITEM INFO:");
-			LOGGER.info("       item name: " + item.getItemName() + " | description: " + item.getDescription() + " | price: £" + item.getPrice()  );
+			LOGGER.info("       item name: " + item.getItemName() + " | description: " + item.getDescription() + " | price: ï¿½" + item.getPrice()  );
 		}
 		LOGGER.info("-".repeat(50));
 		LOGGER.info("CUSTOMER INFO:");
