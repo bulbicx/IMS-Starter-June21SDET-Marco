@@ -1,7 +1,6 @@
 package com.qa.ims.controllers;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +62,7 @@ public class CustomerControllerTest {
 	}
 	
 	@Test
-	public void readOne() {
+	public void TestReadOne() {
 		Customer customer = new Customer(1L, "marie", "pop");
 		Customer customer2 = null;
 		Long ID = 1L;
