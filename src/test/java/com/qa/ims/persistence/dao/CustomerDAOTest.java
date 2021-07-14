@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.qa.ims.persistence.domain.Customer;
@@ -20,11 +21,12 @@ public class CustomerDAOTest {
 		DBUtils.connect();
 		DBUtils.getInstance().init("src/test/resources/sql-schema.sql", "src/test/resources/sql-data.sql");
 	}
-
+	
 	@Test
 	public void testCreate() {
-		final Customer created = new Customer(2L, "chris", "perrins");
-		assertEquals(created, DAO.create(created));
+		final Customer created = new Customer(2L, "jordan", "harrison");
+		Customer newCustomer = new Customer("jordan", "harrison");
+		assertEquals(created, DAO.create(newCustomer));
 	}
 
 	@Test
@@ -33,25 +35,25 @@ public class CustomerDAOTest {
 		expected.add(new Customer(1L, "jordan", "harrison"));
 		assertEquals(expected, DAO.readAll());
 	}
-
+	
 	@Test
 	public void testReadLatest() {
 		assertEquals(new Customer(1L, "jordan", "harrison"), DAO.readLatest());
 	}
-
+	
 	@Test
 	public void testRead() {
 		final long ID = 1L;
 		assertEquals(new Customer(ID, "jordan", "harrison"), DAO.read(ID));
 	}
-
+	
 	@Test
 	public void testUpdate() {
 		final Customer updated = new Customer(1L, "chris", "perrins");
 		assertEquals(updated, DAO.update(updated));
 
 	}
-
+	
 	@Test
 	public void testDelete() {
 		assertEquals(1, DAO.delete(1));
