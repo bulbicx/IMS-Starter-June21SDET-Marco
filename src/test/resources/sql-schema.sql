@@ -40,3 +40,6 @@ CREATE TABLE IF NOT EXISTS `orders_items` (
 );
 
 INSERT INTO `customers` (`first_name`, `surname`) VALUES ('jordan', 'harrison');
+INSERT INTO `items` (`item_name`, `description`, `price`) VALUES ('shoes', 'description', 5.5);
+INSERT INTO `orders` (`customer_id`, `total`) VALUES (1, 5.5);
+INSERT INTO `orders_items` (`order_id`, `item_id`, `qty`, `line_total`) VALUES (1, 1, 1, 5.5);
