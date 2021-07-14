@@ -72,9 +72,9 @@ public class OrderController implements CrudController<Order> {
 		LOGGER.info("-".repeat(50));
 		for (OrderItem orderItem : orderItems) {
 			Item item = itemDAO.read(orderItem.getItemId());
-			LOGGER.info("order item id: " + orderItem.getOrderItemId() + " | item id: " + orderItem.getItemId() + " | quantity: " + orderItem.getQty() + " | lineTotal: £" + orderItem.getLineTotal());
+			LOGGER.info("order item id: " + orderItem.getOrderItemId() + " | item id: " + orderItem.getItemId() + " | quantity: " + orderItem.getQty() + " | lineTotal: ï¿½" + orderItem.getLineTotal());
 			LOGGER.info("       ITEM INFO:");
-			LOGGER.info("       item name: " + item.getItemName() + " | description: " + item.getDescription() + " | price: £" + item.getPrice()  );
+			LOGGER.info("       item name: " + item.getItemName() + " | description: " + item.getDescription() + " | price: ï¿½" + item.getPrice()  );
 		}
 		LOGGER.info("-".repeat(50));
 		LOGGER.info("CUSTOMER INFO:");
@@ -119,7 +119,8 @@ public class OrderController implements CrudController<Order> {
 	 * It adds an item to an order when creating one by using user inputs
 	 */
 	public OrderItem createOrderItem() {
-		Long orderId = orderDAO.readLatest().getOrderId();
+		Order order = orderDAO.readLatest();
+		Long orderId = order.getOrderId();
 		LOGGER.info("Please enter the item id to include in this order");
 		Long itemId = utils.getLong();
 		Item item = itemDAO.read(itemId);
@@ -129,7 +130,7 @@ public class OrderController implements CrudController<Order> {
 		}
 		LOGGER.info("Please enter the quantity for this item");
 		int qty = utils.getInt();
-		double priceItem = itemDAO.read(itemId).getPrice();
+		double priceItem = item.getPrice();
 		double lineTotal = priceItem * qty;
 		OrderItem orderItem = orderItemDAO.create(new OrderItem(orderId, itemId, qty, lineTotal));
 		LOGGER.info("Item added to the order");
@@ -159,7 +160,7 @@ public class OrderController implements CrudController<Order> {
 		} else {
 			LOGGER.info("Please enter the quantity for this item");
 			int qty = utils.getInt();
-			double priceItem = itemDAO.read(itemId).getPrice();
+			double priceItem = item.getPrice();
 			double lineTotal = priceItem * qty;
 			orderItem = orderItemDAO.create(new OrderItem(orderId, itemId, qty, lineTotal));
 			LOGGER.info("Item has been added to the order");
