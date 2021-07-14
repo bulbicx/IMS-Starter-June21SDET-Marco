@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -177,10 +176,17 @@ public class OrderControllerTest {
 		Mockito.when(itemDAO.read(1L)).thenReturn(item2);
 		Mockito.when(orderItemDAO.readOrderItem(1L, 1L)).thenReturn(null);
 		Mockito.when(utils.getInt()).thenReturn(2);
-		
 		Mockito.when(orderItemDAO.create(new OrderItem(1L, 1L, 2, 10.0))).thenReturn(orderItem2);
 		assertEquals(orderItem2, controller.addItemToOrder(1L));
 		
+		Mockito.verify(utils, Mockito.times(2)).getLong();
+		Mockito.verify(utils, Mockito.times(1)).getInt();
+		Mockito.verify(itemDAO, Mockito.times(2)).read(3L);
+		Mockito.verify(itemDAO, Mockito.times(1)).read(1L);
+		Mockito.verify(orderItemDAO, Mockito.times(1)).readOrderItem(1L, 3L);
+		Mockito.verify(orderItemDAO, Mockito.times(1)).readOrderItem(1L, 1L);
+		Mockito.verify(orderItemDAO, Mockito.times(1)).update(orderItem);
+		Mockito.verify(orderItemDAO, Mockito.times(1)).create(new OrderItem(1L, 1L, 2, 10.0));
 	}
 	
 	@Test
@@ -220,9 +226,8 @@ public class OrderControllerTest {
 	}
 
 	@Test
-	public void updateAddContitionTest() {
+	public void updateAddConditionTest() {
 		Order order = new Order(1L, 7L, 10.0);
-		OrderItem orderItem = new OrderItem(10L, 1L, 5L, 2, 10);
 		
 		//order id wrong
 		Mockito.when(utils.getLong()).thenReturn(2L);
@@ -244,7 +249,6 @@ public class OrderControllerTest {
 	@Test
 	public void updateDeleteConditionTest() {
 		Order order = new Order(1L, 7L, 10.0);
-		OrderItem orderItem = new OrderItem(1L, 1L, 5L, 2, 10);
 		
 		//Test correct order id with DELETE option
 		Mockito.when(utils.getLong()).thenReturn(1L);
