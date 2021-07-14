@@ -114,8 +114,10 @@ public class OrderTest {
 		Order order2 = new Order(1L, 2L, 23.6);
 		Order order3 = new Order(2L, 3L, 27.6);
 		
-		assertTrue(order.equals(order2) && order2.equals(order));
-		assertFalse(order.equals(order3) && order3.equals(order));
+		assertTrue(order.equals(order2));
+		assertTrue(order2.equals(order));
+		assertFalse(order.equals(order3));
+		assertFalse(order3.equals(order));
 	}
 	
 }

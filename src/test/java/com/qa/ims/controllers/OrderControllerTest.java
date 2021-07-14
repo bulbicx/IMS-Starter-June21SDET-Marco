@@ -107,9 +107,8 @@ public class OrderControllerTest {
 	
 	@Test
 	public void createTest() {
-		Order order = new Order(1L, 7L);
-		Order finalOrder = new Order(1L, 7L, 10.0);
-		Customer customer = new Customer(7L, "mario", "bob");
+		Order order = new Order(1L, 1L, 10.0);
+		Customer customer = new Customer(1L, "mario", "bob");
 		
 		//Test wrong customer id
 		Mockito.when(utils.getLong()).thenReturn(2L);
@@ -117,12 +116,15 @@ public class OrderControllerTest {
 		assertEquals(null, controller.create());
 		
 		//Test correct customer id
-		Mockito.when(utils.getLong()).thenReturn(7L);
-		Mockito.when(customerDAO.read(7L)).thenReturn(customer);
-		Mockito.when(orderDAO.create(new Order(7L))).thenReturn(order);	
+		Mockito.when(utils.getLong()).thenReturn(1L);
+		Mockito.when(customerDAO.read(1L)).thenReturn(customer);
+		Mockito.when(orderDAO.create(new Order(1L))).thenReturn(order);	
+		
+
+		Mockito.when(orderDAO.readLatest()).thenReturn(order);
 		Mockito.when(utils.getString()).thenReturn("NO");
-		Mockito.when(orderDAO.update(order)).thenReturn(finalOrder);
-		assertEquals(finalOrder, controller.create());
+		Mockito.when(orderDAO.update(order)).thenReturn(order);
+		assertEquals(order, controller.create());
 	}
 	
 	@Test

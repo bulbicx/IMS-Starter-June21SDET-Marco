@@ -149,8 +149,10 @@ public class OrderItemTest {
 		OrderItem orderItem2 = new OrderItem(1L, 2L, 3L, 2, 22.5);
 		OrderItem orderItem3 = new OrderItem(2L, 4L, 3L, 3, 25.5);
 		
-		assertTrue(orderItem.equals(orderItem2) && orderItem2.equals(orderItem));
-		assertFalse(orderItem.equals(orderItem3) && orderItem3.equals(orderItem));
+		assertTrue(orderItem.equals(orderItem2));
+		assertTrue(orderItem2.equals(orderItem));
+		assertFalse(orderItem.equals(orderItem3));
+		assertFalse(orderItem3.equals(orderItem));
 	}
 
 }

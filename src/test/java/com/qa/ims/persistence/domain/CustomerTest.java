@@ -4,10 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
 
 public class CustomerTest {
 
@@ -105,15 +103,10 @@ public class CustomerTest {
 		Customer customer1 = new Customer(1L, "Bob", "Marley");
 		Customer customer2 = new Customer(1L, "Bob", "Marley");
 		Customer customer3 = new Customer(2L, "Alia", "Black");
-		assertTrue(customer1.equals(customer2) && customer2.equals(customer1));
-		assertFalse(customer1.equals(customer3) && customer3.equals(customer1));
-	}
-
-
-	@Test
-	@Ignore
-	public void testEquals() {
-		EqualsVerifier.simple().forClass(Customer.class).verify();
+		assertTrue(customer1.equals(customer2));
+		assertTrue(customer2.equals(customer1));
+		assertFalse(customer1.equals(customer3));
+		assertFalse(customer3.equals(customer1));
 	}
 
 }

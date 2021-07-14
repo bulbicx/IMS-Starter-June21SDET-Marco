@@ -129,9 +129,10 @@ public class ItemTest {
 		Item item2 = new Item(1L, "name", "A nice pair of shoes", 22.5);
 		Item item3 = new Item(2L, "another", "A nice pair of shoes", 25.5);
 		
-		assertTrue(item.equals(item2) && item2.equals(item));
-		assertFalse(item.equals(item3) && item3.equals(item));
-		
+		assertTrue(item.equals(item2));
+		assertTrue(item2.equals(item));
+		assertFalse(item.equals(item3));
+		assertFalse(item3.equals(item));
 	}
 	
 }
