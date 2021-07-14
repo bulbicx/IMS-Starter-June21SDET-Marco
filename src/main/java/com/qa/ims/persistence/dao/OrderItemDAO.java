@@ -35,7 +35,7 @@ public class OrderItemDAO implements Dao<OrderItem> {
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders_items");) {
 			List<OrderItem> ordersItems = new ArrayList<>();
 			while (resultSet.next()) {
-				resultSet.previous();
+//				resultSet.previous();
 				ordersItems.add(modelFromResultSet(resultSet));
 			}
 			return ordersItems;
