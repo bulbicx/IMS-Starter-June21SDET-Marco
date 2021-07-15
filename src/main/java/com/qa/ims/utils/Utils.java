@@ -33,6 +33,20 @@ public class Utils {
 		} while (longInput == null);
 		return longInput;
 	}
+	
+	public Integer getInt() {
+		String input = null;
+		Integer intInput = null;
+		do {
+			try {
+				input = getString();
+				intInput = Integer.parseInt(input);
+			} catch (NumberFormatException nfe) {
+				LOGGER.info("Error - Please enter a number");
+			}
+		} while (intInput == null);
+		return intInput;
+	}
 
 	public String getString() {
 		return scanner.nextLine();

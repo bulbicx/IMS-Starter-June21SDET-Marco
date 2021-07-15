@@ -51,8 +51,35 @@ public class CustomerControllerTest {
 		Mockito.when(dao.readAll()).thenReturn(customers);
 
 		assertEquals(customers, controller.readAll());
+		
+		//customers database empty
+		List<Customer> noCustomers = new ArrayList<>();
+		
+		Mockito.when(dao.readAll()).thenReturn(noCustomers);
+		assertEquals(noCustomers, controller.readAll());
 
-		Mockito.verify(dao, Mockito.times(1)).readAll();
+		Mockito.verify(dao, Mockito.times(2)).readAll();
+	}
+	
+	@Test
+	public void TestReadOne() {
+		Customer customer = new Customer(1L, "marie", "pop");
+		Customer customer2 = null;
+		Long ID = 1L;
+		
+		Mockito.when(utils.getLong()).thenReturn(ID);
+		Mockito.when(dao.read(ID)).thenReturn(customer);
+		
+		assertEquals(customer, controller.readOne());
+		
+		//wrong or non existent ID
+		Mockito.when(utils.getLong()).thenReturn(ID);
+		Mockito.when(dao.read(ID)).thenReturn(null);
+		
+		assertEquals(customer2, controller.readOne());
+		
+		Mockito.verify(this.utils, Mockito.times(2)).getLong();
+		Mockito.verify(this.dao, Mockito.times(2)).read(ID);
 	}
 
 	@Test
@@ -60,27 +87,48 @@ public class CustomerControllerTest {
 		Customer updated = new Customer(1L, "chris", "perrins");
 
 		Mockito.when(this.utils.getLong()).thenReturn(1L);
+		Mockito.when(dao.read(1L)).thenReturn(updated);
+		
 		Mockito.when(this.utils.getString()).thenReturn(updated.getFirstName(), updated.getSurname());
 		Mockito.when(this.dao.update(updated)).thenReturn(updated);
 
 		assertEquals(updated, this.controller.update());
+		
+		//Id wrong or non existent
+		Mockito.when(this.utils.getLong()).thenReturn(2L);
+		Mockito.when(dao.read(2L)).thenReturn(null);
 
-		Mockito.verify(this.utils, Mockito.times(1)).getLong();
+		assertEquals(null, this.controller.update());
+		
+		Mockito.verify(this.utils, Mockito.times(2)).getLong();
+		Mockito.verify(this.dao, Mockito.times(1)).read(1L);
+		Mockito.verify(this.dao, Mockito.times(1)).read(2L);
 		Mockito.verify(this.utils, Mockito.times(2)).getString();
 		Mockito.verify(this.dao, Mockito.times(1)).update(updated);
 	}
 
 	@Test
 	public void testDelete() {
+		Customer customer = new Customer(1L, "marie", "pop");
 		final long ID = 1L;
 
 		Mockito.when(utils.getLong()).thenReturn(ID);
+		Mockito.when(dao.read(ID)).thenReturn(customer);
 		Mockito.when(dao.delete(ID)).thenReturn(1);
 
 		assertEquals(1L, this.controller.delete());
-
-		Mockito.verify(utils, Mockito.times(1)).getLong();
+		
+		//id wrong or non existent
+		Mockito.when(utils.getLong()).thenReturn(2L);
+		Mockito.when(dao.read(2L)).thenReturn(null);
+		
+		assertEquals(0, this.controller.delete());
+		
+		Mockito.verify(utils, Mockito.times(2)).getLong();
+		Mockito.verify(dao, Mockito.times(1)).read(ID);
+		Mockito.verify(dao, Mockito.times(1)).read(2L);
 		Mockito.verify(dao, Mockito.times(1)).delete(ID);
+		
 	}
 
 }

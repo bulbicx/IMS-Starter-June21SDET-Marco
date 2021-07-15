@@ -32,10 +32,34 @@ public class CustomerController implements CrudController<Customer> {
 	@Override
 	public List<Customer> readAll() {
 		List<Customer> customers = customerDAO.readAll();
+		if(customers.size() < 1) {
+			LOGGER.info("There are no customers stored in the database.");
+			return customers;
+		}
+		LOGGER.info("*".repeat(50));
 		for (Customer customer : customers) {
 			LOGGER.info(customer);
 		}
+		LOGGER.info("*".repeat(50));
 		return customers;
+	}
+	
+	/**
+	 * Reads a customer by taking their id
+	 */
+	@Override
+	public Customer readOne() {
+		LOGGER.info("Please enter the id of the customer you would like to read");
+		Long id = utils.getLong();
+		Customer customer = customerDAO.read(id);
+		if(customer == null) {
+			LOGGER.info("Customer with the id specified could not be found. Please insert a valid ID");
+			return customer;
+		}
+		LOGGER.info("*".repeat(50));
+		LOGGER.info(customer);
+		LOGGER.info("*".repeat(50));
+		return customer;
 	}
 
 	/**
@@ -59,11 +83,16 @@ public class CustomerController implements CrudController<Customer> {
 	public Customer update() {
 		LOGGER.info("Please enter the id of the customer you would like to update");
 		Long id = utils.getLong();
+		Customer customer = customerDAO.read(id);
+		if(customer == null) {
+			LOGGER.info("Customer with the id specified could not be found. Please insert a valid ID");
+			return customer;
+		}
 		LOGGER.info("Please enter a first name");
 		String firstName = utils.getString();
 		LOGGER.info("Please enter a surname");
 		String surname = utils.getString();
-		Customer customer = customerDAO.update(new Customer(id, firstName, surname));
+		customer = customerDAO.update(new Customer(id, firstName, surname));
 		LOGGER.info("Customer Updated");
 		return customer;
 	}
@@ -77,7 +106,16 @@ public class CustomerController implements CrudController<Customer> {
 	public int delete() {
 		LOGGER.info("Please enter the id of the customer you would like to delete");
 		Long id = utils.getLong();
-		return customerDAO.delete(id);
+		Customer customer = customerDAO.read(id);
+		if(customer == null) {
+			LOGGER.info("Customer with the id specified could not be found. Please insert a valid ID");
+			return 0;
+		}
+		int result = customerDAO.delete(id);
+		if(result > 0) {
+			LOGGER.info("Customer with id "+ id +" deleted");
+		}
+		return result;
 	}
 
 }
