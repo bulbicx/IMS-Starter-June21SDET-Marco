@@ -8,9 +8,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-In order to first use the application for running it and testing it, We need to have Java(v1.8 onward), Eclipse and Maven installed on our computer. For this guide we will use Windows OS.
+In order to first use the application for running it and testing it, We need to have **Java**(v1.8 onward), **MySql**, **Eclipse** and **Maven** installed on our computer. For this guide we will use Windows OS.
 
-JAVA 
+**JAVA**
 
 To check if you have the java installed on your machine and what version you are using, open the command prompt(cmd) and type:
 
@@ -23,25 +23,39 @@ https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html
 
 After downloading it we need to install it. 
 
-1. Follow the instructions and click next, all pre-compiled setting will be fine. When it is time to select the destination folder, select the C:/Program Files/Java path.
+(1) Follow the instructions and click next, all pre-compiled setting will be fine. When it is time to select the destination folder, select the 
 
-2. Now, It is time to edit our environment variables by clicking onto the windows button and searching path. It will appear "EDIT the system environment variables", click onto it. 
+```
+C:/Program Files/Java path.
+```
 
-3. When it opens up a window you will need to click onto "Environment Variables" and it will open another window. 
+(2) Now, It is time to edit our environment variables by clicking onto the windows button on our keyboard and searching "path". It will appear "EDIT the system environment variables", click onto it. 
 
-4. From this screen click onto "New..." and type "JAVA_HOME" on variable name, and insert the Java path on variable value (where it is installed), which should be something like "C:\Program Files\Java\jdk-14.0.1". Click on Ok and you should be able to see the new variable created.
+(3) When it opens up a window you will need to click onto **Environment Variables** and it will open another window. 
 
-5. Now we need to edit our "Path" variable found on System variables, so click onto it and then click on "Edit...".
+(4) From this screen click onto **New...** and type: 
 
-6. We need to add our JAVA_HOME variable we created by typing:
+```
+JAVA_HOME
+```
+on variable name, and insert the Java path on variable value (where it is installed), which should be something like:
+
+```
+C:\Program Files\Java\jdk-14.0.1
+```
+Click on Ok and you should be able to see the new variable created.
+
+(5) Now we need to edit our "Path" variable found on System variables, so click onto it and then click on **Edit...**.
+
+(6) We need to add our **JAVA_HOME** variable we created by typing:
 
 ```
 %JAVA_HOME%\bin. Click on OK.
 ```
 
-7. To test our Java is recognized, open the cmd and type java. You should be able to see a series of command instructions
+(7) To test our Java is recognized, open the cmd and type java. You should be able to see a series of command instructions
 
-ECLIPSE
+**ECLIPSE**
 
 Download Eclipse from this link if you do not have it installed.
 
@@ -49,23 +63,23 @@ https://www.eclipse.org/downloads/
 
 Follow the pre-compiled settings and install it.
 
-MAVEN
+**MAVEN**
 
-1. Download Maven from the link below.
+(1) Download Maven from the link below.
 
 https://maven.apache.org/download.cgi
 
-2. Install it to your machine.
+(2) Install it to your machine.
 
-3. We need to navigate to the "Environment variables" as we did before and create two new variables with the name of "M2_HOME" and "MAVEN_HOME". They both need to link to the path maven is installed.
+(3) We need to navigate to the "Environment variables" as we did before and create two new variables with the name of "M2_HOME" and "MAVEN_HOME". They both need to link to the path maven is installed.
 
-4. Now, we need to edit our "Path" variable and add:
+(4) Now, we need to edit our "Path" variable and add:
 
 ```
 %MAVEN_HOME%\bin;
 ```
 
-5. To verify we correctly installed Maven. Open the cmd and type:
+(5) To verify we correctly installed Maven. Open the cmd and type:
 
 ```
 mvn -version
@@ -75,24 +89,38 @@ mvn -version
 
 In order to get our envirnoment setup ready, we need to follow the below instructions.
 
-1. Clone this repository to your local machine and open it with Eclipse.
+(1) Clone this repository to your local machine and open it with Eclipse.
 
-2. After the project is loaded, you should be able to see it on the Package Explorer window placed on the left hand side.
+(2) After the project is loaded, you should be able to see it on the Package Explorer window placed on the left hand side.
 
-3. Expand the folder and you will be able to see a series of folders.
+(3) Expand the folder and you will be able to see a series of folders
 
-![folder (4)](https://user-images.githubusercontent.com/56220535/125768558-551db3b4-40cf-40e1-97b7-96bcab196d47.png) src/main/java --> It is where our application code resides.
+* src/main/java --> It is where our application code resides.
+ 
+* src/main/resources --> We keep the resources needed for our main java code, for example our database properties connection.
 
-![folder (4)](https://user-images.githubusercontent.com/56220535/125768558-551db3b4-40cf-40e1-97b7-96bcab196d47.png) src/main/resources --> We keep the resources needed for our main java code, for example our database properties connection.
+* src/test/java --> It is where all the testing resides
 
-![folder (4)](https://user-images.githubusercontent.com/56220535/125768558-551db3b4-40cf-40e1-97b7-96bcab196d47.png) src/test/java --> It is where all the testing resides
+* src/test/resources --> We keep the resources needed for our test code.
 
-![folder (4)](https://user-images.githubusercontent.com/56220535/125768558-551db3b4-40cf-40e1-97b7-96bcab196d47.png) src/test/resources --> We keep the resources needed for our test code.
+(4) Before running the application, we need to create a database properties connection file as it is not present for security reasons. Click on src/main/resources and create a file named "db.properties" with properties extension.
 
-4. To run the application to our console in Eclipse, right click onto src/main/java folder or just right click onto the runner.java file.
+(5) Inside the file insert the database connection, username and password using the down below template.
 
+```
+db.url=jdbc:mysql://localhost:3306/<database_name>?serverTimezone=UTC
+db.user=username
+db.password=password
 
-5. The application will run and it will prompt the user to choose 3 entities to play with.
+```
+
+(6) Save the file and copy it and paste it on src/test/resources, as we will need to have it for the testing as well.
+
+(7) To construct the tables, you can use the "sql-schema.sql" file to run onto MySql. 
+
+(8) To run the application to our console in Eclipse, right click onto src/main/java folder or just right click onto the runner.java file.
+
+(9) The application will run and it will prompt the user to choose 3 entities to play with.
 
 ```
 Welcome to the Inventory Management System!
@@ -147,38 +175,59 @@ stop
 
 ## Running the tests
 
-Explain how to run the automated tests for this system. Break down into which tests and what they do
+The application can be tested using JUnit, which is a dependency of Maven. Each JUnit test will tests a piece of code. You may find that a method may have different tests related to it as there are different scenario that may happens and so all of them need to be covered.
 
 ### Unit Tests 
 
-Explain what these tests test, why and how to run them
+To run the whole application, we can right click onto the project from **Package Explorer** and click on **Run As** > **JUnit Test**. It will run all the tests present in *the src/test/java* folder and produce the results. It is possible to run a single file which can be found by navigating the package structure. You will find that the tests files are named after the class they will be testing followed by **Test** keyword, as JUnit will recognize it in this way. I am going to give an example on running a JUnit test for CustomerController.
+
+(1) Open the file from *src/test/java* > *com.qa.ims* > *controllers* > *CustomerControllerTest.java*
+
+(2) You will find that the class is using **Mockito**, a Maven dependency which will help us on creating a dummy object, which it is needed for testing. Notice that when we run tests we do not want to be relying on some other class or method.
+
+(3) Each method will precede the **@Test** annotation. We can test a single method or the whole class by right clicking the method or the class and then click onto **Run As** > **JUnit Test**.
 
 ```
-Give an example
+	@Test
+	public void testCreate() {
+		final String F_NAME = "barry", L_NAME = "scott";
+		final Customer created = new Customer(F_NAME, L_NAME);
+
+		Mockito.when(utils.getString()).thenReturn(F_NAME, L_NAME);
+		Mockito.when(dao.create(created)).thenReturn(created);
+
+		assertEquals(created, controller.create());
+
+		Mockito.verify(utils, Mockito.times(2)).getString();
+		Mockito.verify(dao, Mockito.times(1)).create(created);
+	}
 ```
+
+(4) After the test is run. We will wee a JUnit window opening up and displaying the results of the tests and if any failure have happened they will be displayed in the **Failure Trace** window
+
+(5) We are able to run a JUnit coverage test by right click and then **Coverage As** > **JUnit Test**. With this test it will open up a window, which will show us how much the test class is covered and how much the class tested has been covered.
+
 
 ### Integration Tests 
-Explain what these tests test, why and how to run them
 
-```
-Give an example
-```
+There are no integration tests for this application
 
 ### And coding style tests
 
-Explain what these tests test and why
-
-```
-Give an example
-```
+There are no coding styles tests for this application
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+This application is not ready for deployment.
 
 ## Built With
 
 * [Maven](https://maven.apache.org/) - Dependency Management
+* [Java](https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html) - Programming Language
+* [MySql](https://www.mysql.com/downloads/) - Database
+* [Eclipse](https://www.eclipse.org/downloads/) - IDE
+* [Git](https://git-scm.com/downloads) - Version Control
+* [Jira](https://www.atlassian.com/) - Software helping managing the work
 
 ## Versioning
 
@@ -187,6 +236,7 @@ We use [SemVer](http://semver.org/) for versioning.
 ## Authors
 
 * **Chris Perrins** - *Initial work* - [christophperrins](https://github.com/christophperrins)
+* **Marco Castellana** - *Completed work*
 
 ## License
 
@@ -196,6 +246,3 @@ This project is licensed under the MIT license - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
